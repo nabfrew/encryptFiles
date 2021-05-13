@@ -8,9 +8,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static com.task.ArgumentParser.HELP_FLAG;
 import static com.task.ArgumentParser.MODE_FLAG;
@@ -98,46 +96,38 @@ class ArgumentParserTest {
 
     @Test
     void noArgument() {
-        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(toArray(new ArrayList<>())).parse());
+        String[] args = {};
+        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(args).parse());
     }
 
     @Test
     void missingPasswordFlag() {
-        var args = Collections.singletonList(DUMMY_FILE_PATH);
-        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(toArray(args)).parse());
+        String[] args = {DUMMY_FILE_PATH};
+        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(args).parse());
     }
 
     @Test
     void missingPasswordFlagWithManyArgs() { //So that invalid input cannot be deduced from nr. of args.
-        var args = Arrays.asList(MODE_FLAG_TERSE, DECRYPT_MODE_TERSE, DUMMY_FILE_PATH, DUMMY_FILE_PATH);
-
-        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(toArray(args)).parse());
+        String[] args = {MODE_FLAG_TERSE, DECRYPT_MODE_TERSE, DUMMY_FILE_PATH, DUMMY_FILE_PATH};
+        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(args).parse());
     }
 
     @Test
     void missingFilePath() {
-        var args = Arrays.asList(PASSWORD_FLAG_TERSE, PASSWORD);
-
-        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(toArray(args)).parse());
+        String[] args = {PASSWORD_FLAG_TERSE, PASSWORD};
+        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(args).parse());
     }
 
     @Test
     void missingFilePathWithManyArguments() { //So that invalid input cannot be deduced from nr. of args.
-        var args = Arrays.asList(PASSWORD_FLAG_TERSE, PASSWORD, MODE_FLAG_TERSE, DECRYPT_MODE_TERSE);
-        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(toArray(args)).parse());
+        String[] args = {PASSWORD_FLAG_TERSE, PASSWORD, MODE_FLAG_TERSE, DECRYPT_MODE_TERSE};
+        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(args).parse());
     }
 
     @Test
     void missingArgumentValue() {
-        var args = Arrays.asList(PASSWORD_FLAG_TERSE, PASSWORD, MODE_FLAG_TERSE);
-        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(toArray(args)).parse());
-    }
-
-    // Helper methods:
-
-    private String[] toArray(List<String> list) {
-        var array = new String[list.size()];
-        return list.toArray(array);
+        String[] args = {PASSWORD_FLAG_TERSE, PASSWORD, MODE_FLAG_TERSE};
+        assertThrows(InvalidArgumentException.class, () -> new ArgumentParser(args).parse());
     }
 
     /*
